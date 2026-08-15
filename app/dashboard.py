@@ -11,10 +11,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
 
-from src.instance_generator import generate_instance
-from src.cpsat_solver import solve_jssp
-from src.pareto_frontier import compute_pareto
-from src.heuristic import solve_spt
+from src.instance_generator import generate_jssp_instance
+from src.cpsat_solver import solve_jssp_cpsat
+from src.pareto_frontier import compute_pareto_frontier
+from src.heuristic import solve_spt_heuristic
 
 st.set_page_config(page_title="Production Scheduler (JSSP)", page_icon="🏭", layout="wide")
 
@@ -32,8 +32,8 @@ seed = st.sidebar.number_input("Random Seed", value=42)
 # ─── Run Single Solve ───
 if st.button("Solve (Makespan Minimization)", type="primary"):
     with st.spinner("Generating instance and solving..."):
-        instance = generate_instance(num_jobs, num_machines, seed=seed)
-        result = solve_jssp(instance, time_limit=time_limit)
+        instance = generate_jssp_instance(num_jobs, num_machines, seed=seed)
+        result = solve_jssp_cpsat(instance, time_limit=time_limit)
 
     col1, col2, col3 = st.columns(3)
     col1.metric("Makespan", f"{result['makespan']}")
@@ -60,8 +60,8 @@ if st.button("Solve (Makespan Minimization)", type="primary"):
 # ─── Run Pareto Frontier ───
 if st.button("Compute Pareto Frontier", type="secondary"):
     with st.spinner("Computing Pareto frontier (makespan vs. utilization)..."):
-        instance = generate_instance(num_jobs, num_machines, seed=seed)
-        pareto_points = compute_pareto(instance, time_limit=time_limit)
+        instance = generate_jssp_instance(num_jobs, num_machines, seed=seed)
+        pareto_points = compute_pareto_frontier(instance, time_limit=time_limit)
 
     st.subheader("Pareto Frontier")
     pareto_df = pd.DataFrame(pareto_points)
