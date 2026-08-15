@@ -6,10 +6,11 @@ and maximizing machine utilization. Each point on the Pareto frontier represents
 a solution where you cannot improve one objective without worsening the other.
 """
 from src.cpsat_solver import solve_jssp_cpsat
+from src.instance_generator import generate_jssp_instance
 from src.data_types import ParetoPoint
 
 
-def compute_pareto_frontier(jobs: list, machines: list,
+def compute_pareto_frontier(num_jobs=10, num_machines=5,
                              weight_pairs=None) -> list:
     """
     Compute the Pareto frontier for makespan vs utilization.
@@ -35,6 +36,7 @@ def compute_pareto_frontier(jobs: list, machines: list,
             (1, 100),  # heavy utilization emphasis
         ]
 
+    jobs, machines = generate_jssp_instance(num_jobs, num_machines, seed=42)
     points = []
 
     print("=== Pareto Frontier ===")
