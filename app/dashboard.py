@@ -73,7 +73,7 @@ def plotly_gantt(df):
     fig.update_yaxes(autorange="reversed")
     fig.update_layout(title="Gantt Chart — Schedule",
                       xaxis_title="Time", yaxis_title="Machine",
-                      margin=dict(l=0, r=0, t=40, b=0))
+                      margin={"l": 0, "r": 0, "t": 40, "b": 0})
     return fig
 
 
@@ -160,7 +160,7 @@ with tab1:
 
     gcol, ucol = st.columns([2, 1])
     with gcol:
-        st.plotly_chart(plotly_gantt(df), use_container_width=True)
+        st.plotly_chart(plotly_gantt(df), width='stretch')
     with ucol:
         util_df = pd.DataFrame({
             "Machine": [f"M{m}" for m in sorted(schedule.machine_utilization.keys())],
@@ -171,11 +171,11 @@ with tab1:
                      color="Utilization (%)", color_continuous_scale="Blues",
                      text="Utilization (%)")
         fig.update_layout(title="Machine Utilization", showlegend=False,
-                          margin=dict(l=0, r=0, t=40, b=0))
-        st.plotly_chart(fig, use_container_width=True)
+                  margin={"l": 0, "r": 0, "t": 40, "b": 0})
+        st.plotly_chart(fig, width='stretch')
 
     with st.expander("View assignment table"):
-        st.dataframe(df, use_container_width=True)
+        st.dataframe(df, width='stretch')
 
 # ---- Tab 2: Comparison ----
 with tab2:
@@ -190,13 +190,13 @@ with tab2:
                      text="Makespan",
                      color_discrete_sequence=["#55A868", "#4C72B0"])
         fig.update_layout(title="Makespan Comparison", showlegend=False)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
     with c_right:
         fig = px.bar(comp_df, x="Algorithm", y="Solve Time (s)", color="Algorithm",
                      text=[f"{t:.2f}" for t in comp_df["Solve Time (s)"]],
                      color_discrete_sequence=["#55A868", "#4C72B0"])
         fig.update_layout(title="Solve Time Comparison", showlegend=False)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
 # ---- Tab 3: Pareto Frontier (lazy) ----
 with tab3:
@@ -219,8 +219,8 @@ with tab3:
                          text="Weights", size=[30] * len(p_df))
         fig.update_traces(textposition="top center")
         fig.update_layout(title="Pareto Frontier")
-        st.plotly_chart(fig, use_container_width=True)
-        st.dataframe(p_df, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
+        st.dataframe(p_df, width='stretch')
     else:
         st.info("Pareto frontier not computed yet.")
 
@@ -245,8 +245,8 @@ with tab4:
         } for r in tuning])
         fig = px.line(t_df, x="Value", y="Makespan", color="Param",
                       markers=True, title="Makespan vs Tuning Parameter")
-        st.plotly_chart(fig, use_container_width=True)
-        st.dataframe(t_df, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
+        st.dataframe(t_df, width='stretch')
     else:
         st.info("Tuning results not computed yet.")
 
@@ -269,8 +269,8 @@ with tab5:
                       markers=True, title="Makespan vs Processing Time Perturbation")
         fig.add_vline(x=0, line_dash="dash", line_color="gray",
                       annotation_text="Baseline")
-        st.plotly_chart(fig, use_container_width=True)
-        st.dataframe(s_df, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
+        st.dataframe(s_df, width='stretch')
     else:
         st.info("Sensitivity results not computed yet.")
 
