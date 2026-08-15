@@ -13,7 +13,7 @@ import streamlit as st
 
 from src.instance_generator import generate_jssp_instance
 from src.cpsat_solver import solve_jssp_cpsat
-from src.pareto_frontier import compute_pareto_frontiers
+from src.pareto_frontier import compute_pareto_frontier
 
 st.set_page_config(page_title="Production Scheduler (JSSP)", page_icon="🏭", layout="wide")
 
@@ -60,7 +60,7 @@ if st.button("Solve (Makespan Minimization)", type="primary"):
 if st.button("Compute Pareto Frontier", type="secondary"):
     with st.spinner("Computing Pareto frontier (makespan vs. utilization)..."):
         jobs, machines = generate_jssp_instance(num_jobs, num_machines, seed=seed)
-        pareto_points = compute_pareto_frontiers(jobs, machines)
+        pareto_points = compute_pareto_frontier(jobs, machines)
 
     st.subheader("Pareto Frontier")
     pareto_df = pd.DataFrame(pareto_points)
